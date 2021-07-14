@@ -7,7 +7,6 @@ const commentForm = document.getElementById('comment-form')
 const commentInput = document.getElementById('comment-input')
 const likesList = document.getElementsByClassName('likes')[0]
 let currentTime = parseInt(counter.innerText, 10)
-let numOfLikes = 0
 
 document.addEventListener("DOMContentLoaded", (e) => {
     setInterval(startTimer, 1000)
@@ -34,14 +33,30 @@ minus.addEventListener("click", (e) => {
 })
 
 heart.addEventListener("click", (e) => {
-    numOfLikes++
+    // let newLike = document.createElement("li");
+    // newLike.setAttribute("class", `${currentTime}`);
+    // newLike.textContent = `You've liked ${currentTime} (${numOfLikes} times)`
+    // likesList.appendChild(newLike);
 
-    let newLike = document.createElement("li");
-    newLike.setAttribute("class", `${currentTime}`);
-    newLike.textContent = `You've liked ${currentTime} (${numOfLikes} times)`
-    likesList.appendChild(newLike);
+    // resetLikes()
 
-    if (currentTime !== parseInt(likesList.lastChild.className, 10)) {
-        numOfLikes = 0
+    let newLike = Array.prototype.slice.call(likesList).find(function(e) {
+        e.className === `${currentTime}`
+    })
+
+    if (newLike) {
+        newLike.textContent = `You've liked ${currentTime} (${numOfLikes} times)`
+    } else {
+        newLike = document.createElement("li");
+        newLike.setAttribute("class", `${currentTime}`);
+        newLike.textContent = `You've liked ${currentTime} (${numOfLikes} times)`;
+        likesList.appendChild(newLike);
     }
 })
+
+function resetLikes() {
+    let childName = parseInt(likesList.lastChild.className, 10)
+    if (currentTime !== childName) {
+        numOfLikes = 0
+    }
+}
