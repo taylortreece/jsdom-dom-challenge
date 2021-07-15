@@ -5,6 +5,7 @@ const heart = document.getElementById('heart')
 const pause = document.getElementById('pause')
 const commentForm = document.getElementById('comment-form')
 const commentInput = document.getElementById('comment-input')
+const commentField = document.getElementById('list')
 const likesList = document.getElementsByClassName('likes')[0]
 let currentTime = parseInt(counter.innerText, 10)
 
@@ -33,12 +34,15 @@ minus.addEventListener("click", (e) => {
 })
 
 heart.addEventListener("click", (e) => {
-    let newLike = Array.prototype.slice.call(likesList).find(function(e) {
-        debugger
-        e.className.split(" ").shift() === `${currentTime}`
-    })
+    let newLike
 
-    // first number of class name is time, second is number of likes.
+    for (let i=0; i < likesList.children.length; i++) {
+      if (likesList.children[i].className.split(" ").shift() === `${currentTime}`) {
+        newLike = likesList.children[i]
+      }
+    }
+
+    // first number of class name is time, second is number of likes. -- ex. "1 + 3"
     if (newLike) {
         newLike.className = `${currentTime} + ${parseInt(newLike.className.split(" ").pop()) + 1}`
         newLike.textContent = `You've liked ${currentTime} (${parseInt(newLike.className.split(" ").pop())} times)`
@@ -50,9 +54,11 @@ heart.addEventListener("click", (e) => {
     }
 })
 
-function resetLikes() {
-    let childName = parseInt(likesList.lastChild.className, 10)
-    if (currentTime !== childName) {
-        numOfLikes = 0
-    }
-}
+commentForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const newComment = document.createElement('li');
+    newComment.textContent = `${commentInput.value}`
+    commentField.appendChild(newComment)
+})
+
