@@ -33,23 +33,19 @@ minus.addEventListener("click", (e) => {
 })
 
 heart.addEventListener("click", (e) => {
-    // let newLike = document.createElement("li");
-    // newLike.setAttribute("class", `${currentTime}`);
-    // newLike.textContent = `You've liked ${currentTime} (${numOfLikes} times)`
-    // likesList.appendChild(newLike);
-
-    // resetLikes()
-
     let newLike = Array.prototype.slice.call(likesList).find(function(e) {
-        e.className === `${currentTime}`
+        debugger
+        e.className.split(" ").shift() === `${currentTime}`
     })
 
+    // first number of class name is time, second is number of likes.
     if (newLike) {
-        newLike.textContent = `You've liked ${currentTime} (${numOfLikes} times)`
+        newLike.className = `${currentTime} + ${parseInt(newLike.className.split(" ").pop()) + 1}`
+        newLike.textContent = `You've liked ${currentTime} (${parseInt(newLike.className.split(" ").pop())} times)`
     } else {
         newLike = document.createElement("li");
-        newLike.setAttribute("class", `${currentTime}`);
-        newLike.textContent = `You've liked ${currentTime} (${numOfLikes} times)`;
+        newLike.setAttribute("class", `${currentTime} + 1`);
+        newLike.textContent = `You've liked ${currentTime} (1 times)`;
         likesList.appendChild(newLike);
     }
 })
